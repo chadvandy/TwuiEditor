@@ -55,7 +55,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Utilities\FileController.cs" />
+    <Compile Include="Views\App\ExplorerTree.xaml.cs">
+      <DependentUpon>ExplorerTree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\App\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\App\TopBar.xaml.cs">
+      <DependentUpon>TopBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Window\ExplorerTreeViewModel.cs" />
+    <Compile Include="ViewModels\Window\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Window\StatusBarViewModel.cs" />
+    <Compile Include="ViewModels\Window\TopBarViewModel.cs" />
+    <Compile Include="Views\Twui\TwuiHierarchy.xaml.cs">
+      <DependentUpon>TwuiHierarchy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Twui\TwuiLive.xaml.cs">
+      <DependentUpon>TwuiLive.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Twui\TwuiProperties.xaml.cs">
+      <DependentUpon>TwuiProperties.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Twui\TwuiXml.xaml.cs">
+      <DependentUpon>TwuiXml.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\App\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -63,10 +89,38 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\App\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\App\ExplorerTree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\App\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\App\TopBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Twui\TwuiHierarchy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Twui\TwuiLive.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Twui\TwuiProperties.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Twui\TwuiXml.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -93,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

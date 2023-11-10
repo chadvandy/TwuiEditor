@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Main
+namespace Main.Views.Twui
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TwuiProperties.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TwuiProperties : UserControl
     {
-        public MainWindow()
+        public TwuiProperties()
         {
             InitializeComponent();
         }

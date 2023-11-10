@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{254D3295-DB41-483A-A857-324A11657299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{03FF5C9F-26B1-4A2A-9E31-C2B9B82AE3F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwuiSchema", "Data\TwuiSchema.csproj", "{03FF5C9F-26B1-4A2A-9E31-C2B9B82AE3F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
