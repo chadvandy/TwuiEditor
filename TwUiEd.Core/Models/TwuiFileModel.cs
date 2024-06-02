@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using TwUiEd.Core.Services;
 
 namespace TwUiEd.Core.Models
 {
@@ -14,6 +15,8 @@ namespace TwUiEd.Core.Models
         public string Name { get; private set; }
         public string FilePath { get; private set; }
         public string FileContents { get; private set; }
+
+        public TwuiModel Model { get; private set; }
 
         public TextDocument TextDocument { get; private set; }
 
@@ -30,7 +33,7 @@ namespace TwUiEd.Core.Models
 
             //XmlReader xmlReader = new XmlReader(FileContents);
 
-
+            Model = TwuiParser.ParseTwuiFile(fileContents);
         }
     }
 }

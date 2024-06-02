@@ -67,6 +67,7 @@ namespace TwUiEd.Core.Views.Global
             {
                 var cvm = App.Me.Services.GetService<ContentsViewModel>();
                 cvm?.OpenedFiles.Add(twui);
+                cvm?.SelectTab(twui);
             }
 
 

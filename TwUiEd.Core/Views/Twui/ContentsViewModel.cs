@@ -18,9 +18,23 @@ namespace TwUiEd.Core.Views.Twui
     {
         public ObservableCollection<TwuiFileModel> OpenedFiles { get; set; } = [];
 
+        [ObservableProperty]
+        public TwuiFileModel? currentSelectedFile;
+
+        public string Hierarchy { 
+            get {
+                return CurrentSelectedFile?.Model.Root.HierarchyFromComponent ?? "No file selected";
+            }
+        }
+
         public string Contents { get; set; } = string.Empty;
 
         private IFileService _service;
+
+        public void SelectTab(TwuiFileModel file)
+        {
+            CurrentSelectedFile = file;
+        }
 
         public ContentsViewModel(IFileService fileService, MainWindowViewModel main_vm)
         {

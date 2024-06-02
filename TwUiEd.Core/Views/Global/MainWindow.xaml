@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TwUiEd.Core.Views.Global" xmlns:twui="clr-namespace:TwUiEd.Core.Views.Twui"
         mc:Ignorable="d" 
-        Title="MainWindow" Height="450" Width="800">
+        Title="TwUiEdItOr" Height="450" Width="800" WindowState="Maximized" WindowStartupLocation="CenterOwner" SizeToContent="Manual">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>

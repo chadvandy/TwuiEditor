@@ -14,14 +14,16 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <TextBlock Grid.Column="0" DataContext="{Binding CurrentSelectedFile}" Text="{Binding Model.Root.HierarchyFromComponent}"/>
+
         <TabControl 
             Grid.Column="1" 
             ItemsSource="{Binding OpenedFiles}"
+            SelectedItem="{Binding CurrentSelectedFile}"
             x:Name="Tab_OpenedFiles">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TabItem Header="{Binding FilePath}" HorizontalContentAlignment="Center">
-                    </TabItem>
+                    <TabItem Header="{Binding FilePath}" HorizontalContentAlignment="Center" Selector.Selected="TabItem_Selected"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
