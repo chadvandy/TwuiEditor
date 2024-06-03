@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,10 @@ namespace TwUiEd.Core.Models
         public string FileContents { get; private set; }
 
         public TwuiModel Model { get; private set; }
+        public ObservableCollection<TwuiComponentModel> Root =>
+        [
+            Model.Root
+        ];
 
         public TextDocument TextDocument { get; private set; }
 

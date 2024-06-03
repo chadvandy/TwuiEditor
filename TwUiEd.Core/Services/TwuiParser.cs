@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,10 +38,22 @@ namespace TwUiEd.Core.Services
                 ParseHierarchy(ChildNode, ChildComponent);
             }
         }
-        private void ParseTwuiComponentNode(ref XElement Node, ref TwuiComponentModel Component)
+        private static void ParseTwuiComponentNode(XElement Node, TwuiModel Model)
         {
             // Grab our newly created ComponentModel, our current XmlElement that we're at,
             // and run all of our parsing here.
+
+            TwuiComponentModel ThisComponent = Model.AllComponents().FirstOrDefault(x => x.Guid == Node.Attribute("this")?.Value);
+
+            if (ThisComponent  != null)
+            {
+                IEnumerable<XAttribute> attributes = Node.Attributes();
+
+                foreach (XAttribute Attribute in attributes)
+                {
+                    ThisComponent.Properties.Add(new Tuple<string, string>(Attribute.Name.LocalName, Attribute.Value));
+                }
+            }
         }
 
         // Parse our Twui XML File using XDocument.
@@ -91,11 +104,12 @@ namespace TwUiEd.Core.Services
                 ParsedModel.Layout.Comment = layout.Attribute("comment")?.Value;
                 ParsedModel.Layout.PrecacheCondition = layout.Attribute("precache_condition")?.Value;
 
+                XElement? hierarchyNode = layout.Element("hierarchy");
+                XElement? componentNode = layout.Element("components");
+
                 // Let's do a nice little handling of our hierarchy element. We need to grab our hierarchy child node of layout,
                 // then grab its root, set up its information, and then run a loop through all of its children, setting them up in the
                 // ParsedModel with their name, guid, and their parent/child elements.
-                XElement? hierarchyNode = layout.Element("hierarchy");
-
                 if (hierarchyNode != null )
                 {
                     var rootNode = hierarchyNode.Element("root");
@@ -113,6 +127,20 @@ namespace TwUiEd.Core.Services
                         //}
                     }
                     //IEnumerable<XElement> hierarchyNode.Descendants();
+                }
+
+                // Handle our <components> element. We'll start by grabbing our main element, the <components> node,
+                // and then we'll loop through only the immediate children of that element. We need to grab the
+                // pre-created TwuiComponentModel by filtering by name & GUID, and then we'll parse all of the
+                // internal information for this TwuiComponent!
+                if (componentNode != null)
+                {
+                    IEnumerable<XElement> componentNodes = componentNode.Elements();
+
+                    foreach(XElement component in componentNodes)
+                    {
+                        ParseTwuiComponentNode(component, ParsedModel);
+                    }
                 }
             }
 

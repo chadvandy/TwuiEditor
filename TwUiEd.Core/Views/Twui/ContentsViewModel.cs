@@ -21,6 +21,9 @@ namespace TwUiEd.Core.Views.Twui
         [ObservableProperty]
         public TwuiFileModel? currentSelectedFile;
 
+        [ObservableProperty]
+        public TwuiComponentModel? currentSelectedComponent;
+
         public string Hierarchy { 
             get {
                 return CurrentSelectedFile?.Model.Root.HierarchyFromComponent ?? "No file selected";

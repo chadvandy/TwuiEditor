@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace TwUiEd.Core.Models
@@ -16,6 +17,21 @@ namespace TwUiEd.Core.Models
         public string Version { get => Layout.Version ?? "Version not found"; }
         public TwuiLayoutModel Layout { get; set; } = new();
         public TwuiComponentModel Root { get; set; } = new();
+
+        public IEnumerable<TwuiComponentModel> AllComponents()
+        {
+            Stack<TwuiComponentModel> nodes = new();
+            nodes.Push(Root);
+
+            while (nodes.Count > 0)
+            {
+                var n = nodes.Pop();
+                yield return n;
+
+                for (int i = n.Children.Count - 1; i >= 0; i--)
+                    nodes.Push(n.Children[i]);
+            }
+        }
     }
 
     public class TwuiLayoutModel
@@ -42,6 +58,8 @@ namespace TwUiEd.Core.Models
         public ObservableCollection<TwuiComponentModel> Children { get; set; } = [];
         public ObservableCollection<TwuiStateModel> States { get; set; } = [];
         public ObservableCollection<TwuiImageModel> Images { get; set; } = [];
+
+        public ObservableCollection<Tuple<string, string>> Properties { get; set; } = [];
 
         public int Depth
         {

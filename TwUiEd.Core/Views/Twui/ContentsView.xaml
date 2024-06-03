@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TwUiEd.Core.Views.Twui" d:DataContext="{d:DesignInstance Type=local:ContentsViewModel}"
-             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,26 +15,15 @@
 
         <TextBlock Grid.Column="0" DataContext="{Binding CurrentSelectedFile}" Text="{Binding Model.Root.HierarchyFromComponent}"/>
 
-        <TabControl 
-            Grid.Column="1" 
-            ItemsSource="{Binding OpenedFiles}"
-            SelectedItem="{Binding CurrentSelectedFile}"
-            x:Name="Tab_OpenedFiles">
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <TabItem Header="{Binding FilePath}" HorizontalContentAlignment="Center" Selector.Selected="TabItem_Selected"/>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <avalonEdit:TextEditor
-                        SyntaxHighlighting="XML"
-                        FontFamily="Consolas"
-                        FontSize="10pt"
-                        Document="{Binding TextDocument}">
-                    </avalonEdit:TextEditor>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
+        <local:ContentsHierarchyView Grid.Column="0"/>
+
+        <GridSplitter Width="5" Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}},Path=ActualHeight}"></GridSplitter>
+
+        <local:ContentsFileView Grid.Column="1"/>
+        
+        <GridSplitter Grid.Column="1" Width="5" Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}},Path=ActualHeight}"></GridSplitter>
+
+        <local:ContentsPropertiesView Grid.Column="2"/>
+
     </Grid>
 </UserControl>

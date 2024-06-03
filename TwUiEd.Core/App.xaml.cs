@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.ServiceProcess;
@@ -14,7 +15,12 @@ namespace TwUiEd.Core
     /// </summary>
     public partial class App : Application
     {
-        public static App Me => (App)Current;
+        public static App Me {
+            get
+            {
+                return (App)Current;
+            }
+        }
         public IServiceProvider Services { get; }
 
         public App()

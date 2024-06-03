@@ -42,16 +42,5 @@ namespace TwUiEd.Core.Views.Twui
         }
 
         public ContentsViewModel ViewModel => (ContentsViewModel)DataContext;
-
-        private void TabItem_Selected(object sender, RoutedEventArgs e)
-        {
-            if (sender is TabItem tab)
-            {
-                if (tab.DataContext is TwuiFileModel file)
-                {
-                    ViewModel.SelectTab(file);
-                }
-            }
-        }
     }
 }
