@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TwUiEd.Core.Attributes;
 using TwUiEd.Core.Models;
 
 namespace TwUiEd.Core.Views.Twui
@@ -22,10 +23,62 @@ namespace TwUiEd.Core.Views.Twui
     /// </summary>
     public partial class ContentsPropertiesView : UserControl
     {
+        ContentsViewModel ViewModel { get; }
         public ContentsPropertiesView()
         {
             InitializeComponent();
-            DataContext = App.Me.Services.GetService<ContentsViewModel>();
+
+            ViewModel = App.Me.Services.GetService<ContentsViewModel>();
+            DataContext = ViewModel;
+
+            //ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            ViewModel.PropertyChanged += (o, e) =>
+            {
+                //Debug.WriteLine("Main VM Property Changed");
+                switch (e.PropertyName)
+                {
+                    case "CurrentSelectedComponent":
+                        // Refresh and setup our listbox whenever we grab a new selected component in the left-side
+                        // of our User Interface.
+                        SetupListBox();
+                        break;
+                }
+            };
+        }
+
+        private void SetupListBox()
+        {
+            var lb = PropertiesListBox;
+            var items = lb.Items;
+            items.Clear();
+
+            // Run through our currently selected component from our ContentsViewModel and
+            // populate our list box using every non-null TwuiProperty within the currently selected component.
+            TwuiComponentModel? SelectedModel = ViewModel.CurrentSelectedComponent;
+
+            if (SelectedModel != null)
+            {
+                // Grab every TwuiPropertyModel in our UndecodedProperties holder.
+                foreach (var undecoded_prop in SelectedModel.UndecodedProperties)
+                {
+                    items.Add(undecoded_prop);
+                }
+
+                // Loop through all of our TwuiPropertyAttribute'd fields within this component.
+                var props = SelectedModel.GetType().GetProperties();
+                foreach (var prop_info  in props)
+                {
+                    if (prop_info.IsDefined(typeof(TwuiPropertyAttribute), false))
+                    {
+                        var prop_getter = prop_info.GetGetMethod();
+                        var prop_def = prop_getter?.Invoke(SelectedModel, []);
+                        if (prop_def is ITwuiPropertyModel twuiProperty && !twuiProperty.IsNull())
+                        { 
+                            items.Add(twuiProperty);
+                        }
+                    } 
+                }
+            }
         }
     }
 
@@ -42,7 +95,7 @@ namespace TwUiEd.Core.Views.Twui
             if (element != null && item != null)
             {
                 //if (item is ITwuiPropertyModel<dynamic> prop) {
-                if (item is TwuiPropertyModel prop) {
+                if (item is ITwuiPropertyModel prop) {
                     Type type = prop.DataType;
                     string type_name = type.Name;
 

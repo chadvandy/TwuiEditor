@@ -13,6 +13,8 @@ using TwUiEd.Core.Models;
 
 namespace TwUiEd.Core.Services
 {
+
+
     public class TwuiParser
     {
         private static XmlReaderSettings DefaultSettings = new() { Async = true };
@@ -24,7 +26,12 @@ namespace TwUiEd.Core.Services
             // name, GUID, then grab its children, create a new component model for each of them, assign
             // this component as its parent, and parse that node, until we're done the hierarchy.
 
-            Component.Guid = (string)Node.Attribute("this");
+            var guid_attr = Node.Attribute("this");
+            if (guid_attr != null )
+            {
+                Component.Guid = guid_attr.Value;
+            }
+
             Component.Name = Node.Name.LocalName;
 
             // Loop through and create all of our children!
@@ -46,11 +53,11 @@ namespace TwUiEd.Core.Services
             // Grab our newly created ComponentModel, our current XmlElement that we're at,
             // and run all of our parsing here.
 
-            TwuiComponentModel ThisComponent = Model.AllComponents().FirstOrDefault(x => x.Guid == Node.Attribute("this")?.Value);
-            uint version = Model.Version;
+            TwuiComponentModel? ThisComponent = Model.AllComponents().FirstOrDefault(x => x.Guid == Node.Attribute("this")?.Value);
 
             if (ThisComponent  != null)
             {
+                uint version = Model.Version;
                 // Loop through all of our attributes within this element, and handle their values.
                 // We want to keep in mind the expected schema, while still allowing for any attribute to be loaded if
                 // we don't already have it filled out in the schema.
@@ -88,70 +95,25 @@ namespace TwUiEd.Core.Services
                                 var xattr = attributes.FirstOrDefault(x => x.Name.LocalName == name);
                                 if (xattr != null)
                                 {
-                                    //TwuiPropertyModel twuiProperty = new(
-                                    //    name,
-                                    //    type,
-                                    //    Convert.ChangeType(xattr.Value, type)
-                                    //    )
-                                    //{
-                                    //    IsDecoded = true,
-                                    //    Description = twui_attr.Description,
-                                    //    IsRequired = twui_attr.Required
-                                    //};
 
                                     var property_getter = Prop.GetGetMethod();
-                                    var property_setter = Prop.GetSetMethod();
                                     var property = property_getter?.Invoke(ThisComponent, []);
-                                    //TwuiPropertyModel? property 
-                                    if (property is TwuiPropertyModel twuiProperty)
+
+                                    if (property is ITwuiPropertyModel twuiProperty)
                                     {
                                         Type type = twuiProperty.DataType;
 
                                         twuiProperty.Name = name;
-                                        twuiProperty.Value = Convert.ChangeType(xattr.Value, type);
                                         twuiProperty.Description = twui_attr.Description;
                                         twuiProperty.IsRequired = twui_attr.Required;
-                                        twuiProperty.IsDecoded = true;
+
+                                        if (twuiProperty.TryParse(xattr.Value))
+                                        {
+                                            twuiProperty.IsDecoded = true;
+                                            LoadedProperties.Add(name);
+                                        }
                                     }
 
-                                    //if (property != null)
-                                    //{
-                                    //    Type prop_type = property.GetType();
-
-                                    //    if (prop_type.IsGenericType && prop_type.GetGenericTypeDefinition() == typeof(TwuiPropertyModel<>))
-                                    //    {
-                                    //        Type prop_gen_type = prop_type.GetGenericArguments()[0];
-                                    //        Type gen_type = typeof(TwuiPropertyModel<>).MakeGenericType(prop_gen_type);
-
-                                    //        gen_type.GetProperty("Name")?.SetValue(property, name);
-                                    //        gen_type.GetProperty("Value")?.SetValue(property, Convert.ChangeType(xattr.Value, prop_gen_type));
-                                    //        gen_type.GetProperty("Description")?.SetValue(property, twui_attr.Description);
-                                    //        gen_type.GetProperty("IsRequired")?.SetValue(property, twui_attr.Required);
-                                    //        gen_type.GetProperty("IsDecoded")?.SetValue(property, true);
-                                    //        gen_type.GetProperty("PropertyName")?.SetValue(property, Prop.Name);
-                                    //    }
-                                    //}
-                                    //if (property is TwuiPropertyModel<> twuiProperty)
-                                    //{
-                                    //    Type type = twuiProperty.DataType;
-
-                                    //    twuiProperty.Name = name;
-                                    //    twuiProperty.Value = Convert.ChangeType(xattr.Value, type);
-                                    //    twuiProperty.Description = twui_attr.Description;
-                                    //    twuiProperty.IsRequired = twui_attr.Required;
-                                    //    twuiProperty.IsDecoded = true;
-
-                                    //    //property_setter?.Invoke(ThisComponent, [twuiProperty]);
-                                    //}
-
-
-                                    LoadedProperties.Add(name);
-
-                                    // Get the set method for this specific property and pass the new TwuiPropertyModel 
-                                    // to that set method for our current ComponentModel.
-                                    //var property_setter = Prop.GetSetMethod();
-                                    //property_setter?.Invoke(ThisComponent, [twuiProperty]);
-                                    //ThisComponent.Properties.Add(twuiProperty);
                                     break;
                                 }
                             }
@@ -164,19 +126,20 @@ namespace TwUiEd.Core.Services
                 {
                     // Ensure that we don't already have a field loaded up with this name.
                     string name = Attribute.Name.LocalName;
-                    //if (!ThisComponent.Properties.Any(x => x.Name == name))
                     if (!LoadedProperties.Contains(name))
                     {
                         // We'll assume that this is a string.
-                        TwuiPropertyModel twuiProperty = new(typeof(string), string.Empty)
+                        TwuiPropertyModel<string> twuiProperty = new(string.Empty)
                         {
                             Name = name,
-                            Value = Attribute.Value,
+                            //Value = Attribute.Value,
                             Description = "This field is not decoded! Edit this with care.",
                             IsDecoded = false,
                         };
 
-                        ThisComponent.Properties.Add(twuiProperty);
+                        twuiProperty.TryParse(Attribute.Value);
+
+                        ThisComponent.UndecodedProperties.Add(twuiProperty);
                     }
                 }
 

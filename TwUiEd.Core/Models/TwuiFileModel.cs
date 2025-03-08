@@ -38,7 +38,14 @@ namespace TwUiEd.Core.Models
 
             //XmlReader xmlReader = new XmlReader(FileContents);
 
-            Model = TwuiParser.ParseTwuiFile(fileContents);
+            //Model = TwuiParser.ParseTwuiFile(fileContents);
+            //var model = TwuiParserSerialized.ParseXmlFile(FilePath);
+            //if (model != null)
+            //{
+            //    Model = model;
+            //}
+
+            TwuiParserSerialized.ParseXmlFile(FilePath);
         }
     }
 }

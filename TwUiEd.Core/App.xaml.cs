@@ -30,7 +30,7 @@ namespace TwUiEd.Core
             InitializeComponent();
         }
 
-        private async void OnStartup(object sender, StartupEventArgs e)
+        private void OnStartup(object sender, StartupEventArgs e)
         {
             var window = Services.GetService<MainWindow>();
 

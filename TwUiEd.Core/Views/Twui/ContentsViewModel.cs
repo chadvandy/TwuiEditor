@@ -57,7 +57,7 @@ namespace TwUiEd.Core.Views.Twui
             //        case "OpenedFile": 
             //            Model = main_vm.OpenedFile;
             //            Contents = Model?.FileContents ?? string.Empty;
-                        
+
             //            break;
             //    }
             //};
