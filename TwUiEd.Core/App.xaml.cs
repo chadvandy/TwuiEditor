@@ -5,8 +5,9 @@ using System.Data;
 using System.ServiceProcess;
 using System.Windows;
 using TwUiEd.Core.Services;
-using TwUiEd.Core.Views.Global;
+using TwUiEd.Core.ViewModels.Windows;
 using TwUiEd.Core.Views.Twui;
+using TwUiEd.Core.Views.Windows;
 
 namespace TwUiEd.Core
 {
@@ -15,29 +16,40 @@ namespace TwUiEd.Core
     /// </summary>
     public partial class App : Application
     {
-        public static App Me {
-            get
-            {
-                return (App)Current;
-            }
-        }
+        public static new App Current => (App)Application.Current;
+
         public IServiceProvider Services { get; }
 
         public App()
         {
             Services = ConfigureServices();
 
-            InitializeComponent();
+            //InitializeComponent();
+
+#pragma warning disable WPF0001
+            ThemeMode = ThemeMode.Dark;
+
+            Startup += OnStartup;
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            var window = Services.GetService<MainWindow>();
+            // On initial startup, create the MainWindow view and its attached
+            // viewmodel. It's a bit of an anti-pattern, but there's no clean way
+            // to instantiate the viewmodel first when loading up the app that
+            // I know about.
 
+            // From this point forward, the application loads up using the viewmodel
+            // first, and resource dictionaries (defined in MainWindow.xaml and App.xaml)
+            // provide the link between a viewmodel and a view.
+            var window = Services.GetRequiredService<MainWindow>();
+            var vm = Services.GetRequiredService<MainWindowViewModel>();
+
+            window.DataContext = vm;
             window.Show();
         }
 
-        private static IServiceProvider ConfigureServices()
+        private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
 

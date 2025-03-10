@@ -18,6 +18,7 @@ namespace TwUiEd.Core.Models
         public string FileContents { get; private set; }
 
         public TwuiModel Model { get; private set; }
+
         public ObservableCollection<TwuiComponentModel> Root =>
         [
             Model.Root

@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using TwUiEd.Core.Models;
-using TwUiEd.Core.Views.Global;
 
 namespace TwUiEd.Core.Views.Twui
 {
@@ -28,7 +27,7 @@ namespace TwUiEd.Core.Views.Twui
         public ContentsView()
         {
             InitializeComponent();
-            DataContext = App.Me.Services.GetService<ContentsViewModel>();
+            DataContext = App.Current.Services.GetService<ContentsViewModel>();
 
             //var main_vm = App.Me.Services.GetService<MainWindowViewModel>();
 

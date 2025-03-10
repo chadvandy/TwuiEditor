@@ -1,0 +1,65 @@
+﻿<Window x:Class="TwUiEd.Core.Views.Windows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="clr-namespace:TwUiEd.Core.Views.Windows"
+        xmlns:vm="clr-namespace:TwUiEd.Core.ViewModels.Windows"
+        xmlns:twui="clr-namespace:TwUiEd.Core.Views.Twui"
+        mc:Ignorable="d" 
+        Title="TwUiEdItOr" 
+        Height="450" Width="800" 
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
+        WindowState="Maximized" WindowStartupLocation="CenterOwner" 
+        SizeToContent="Manual">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Menu
+            Grid.Row="0"
+            IsMainMenu="True" Name="MainMenu">
+            <MenuItem Header="_File">
+                <MenuItem Header="Open" Command="{Binding OpenFileCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <TabControl 
+            Grid.Row="1"
+            TabStripPlacement="Top"
+            ItemsSource="{Binding OpenedFiles}"
+            SelectedItem="{Binding CurrentlyDisplayedFile, Mode=TwoWay}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Text="{Binding FilePath}"
+                        TextWrapping="NoWrap"
+                        TextTrimming="CharacterEllipsis"
+                        MaxWidth="120"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding}" DataContext="{Binding}"/>
+                    <!--<ContentControl Content="{Binding }"-->
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+            <!--<TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+                    <Setter Property="Header" Value="{Binding FilePath}"/>
+                </Style>
+            </TabControl.Resources>-->
+        </TabControl>
+
+        <!--<twui:ContentsView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>-->
+
+        <StackPanel 
+            Orientation="Horizontal"
+            Grid.Row="2">
+            <TextBlock Text="{Binding StatusText}"/>
+        </StackPanel>
+    </Grid>
+</Window>

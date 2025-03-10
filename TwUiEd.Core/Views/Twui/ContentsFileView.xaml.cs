@@ -27,7 +27,7 @@ namespace TwUiEd.Core.Views.Twui
         public ContentsFileView()
         {
             InitializeComponent();
-            DataContext = App.Me.Services.GetService<ContentsViewModel>();
+            DataContext = App.Current.Services.GetService<ContentsViewModel>();
         }
 
         private void TabItem_Selected(object sender, RoutedEventArgs e)

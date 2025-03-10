@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwUiEd.Core", "TwUiEd.Core\TwUiEd.Core.csproj", "{9EF81728-8CE9-40EB-A698-3F36C44DC16B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5A5D077C-9D85-4DDC-AA67-BACB06884958} = {5A5D077C-9D85-4DDC-AA67-BACB06884958}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroovyCommon", "GroovyCommon\GroovyCommon.csproj", "{5A5D077C-9D85-4DDC-AA67-BACB06884958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{9EF81728-8CE9-40EB-A698-3F36C44DC16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EF81728-8CE9-40EB-A698-3F36C44DC16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EF81728-8CE9-40EB-A698-3F36C44DC16B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A5D077C-9D85-4DDC-AA67-BACB06884958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A5D077C-9D85-4DDC-AA67-BACB06884958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A5D077C-9D85-4DDC-AA67-BACB06884958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A5D077C-9D85-4DDC-AA67-BACB06884958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

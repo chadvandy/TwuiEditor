@@ -25,7 +25,7 @@ namespace TwUiEd.Core.Views.Twui
         public ContentsHierarchyView()
         {
             InitializeComponent();
-            DataContext = App.Me.Services.GetService<ContentsViewModel>();
+            DataContext = App.Current.Services.GetService<ContentsViewModel>();
         }
 
         ContentsViewModel ViewModel => (ContentsViewModel)DataContext;

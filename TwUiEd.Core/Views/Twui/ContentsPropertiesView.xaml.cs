@@ -28,7 +28,7 @@ namespace TwUiEd.Core.Views.Twui
         {
             InitializeComponent();
 
-            ViewModel = App.Me.Services.GetService<ContentsViewModel>();
+            ViewModel = App.Current.Services.GetService<ContentsViewModel>();
             DataContext = ViewModel;
 
             //ViewModel.PropertyChanged += ViewModel_PropertyChanged;

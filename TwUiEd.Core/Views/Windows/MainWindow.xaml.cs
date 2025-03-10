@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,14 +10,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TwUiEd.Core.Views.Global
+namespace TwUiEd.Core.Views.Windows
 {
     /// <summary>
-    /// Interaction logic for StatusBar.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class StatusBar : UserControl
+    public partial class MainWindow : Window
     {
-        public StatusBar()
+        public MainWindow()
         {
             InitializeComponent();
         }

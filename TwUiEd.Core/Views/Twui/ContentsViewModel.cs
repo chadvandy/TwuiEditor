@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TwUiEd.Core.Models;
 using TwUiEd.Core.Services;
-using TwUiEd.Core.Views.Global;
 
 namespace TwUiEd.Core.Views.Twui
 {
@@ -39,7 +38,7 @@ namespace TwUiEd.Core.Views.Twui
             CurrentSelectedFile = file;
         }
 
-        public ContentsViewModel(IFileService fileService, MainWindowViewModel main_vm)
+        public ContentsViewModel(IFileService fileService)
         {
             _service = fileService;
 
