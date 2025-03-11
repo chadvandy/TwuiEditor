@@ -13,8 +13,6 @@ using TwUiEd.Core.Models;
 
 namespace TwUiEd.Core.Services
 {
-
-
     public class TwuiParser
     {
         private static XmlReaderSettings DefaultSettings = new() { Async = true };

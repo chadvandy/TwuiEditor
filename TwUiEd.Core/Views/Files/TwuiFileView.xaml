@@ -5,10 +5,54 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TwUiEd.Core.Views.Files"
              xmlns:vm="clr-namespace:TwUiEd.Core.ViewModels.Files"
+             xmlns:twuivm="clr-namespace:TwUiEd.Core.ViewModels.Twui"
+             xmlns:twui="clr-namespace:TwUiEd.Core.Views.Twui"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=vm:TwuiFileViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Component hierarchy details. -->
+        <TreeView
+            Grid.Column="0"
+            ItemsSource="{Binding Root}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type twuivm:ComponentViewModel}" ItemsSource="{Binding Children}">
+                    <TreeViewItem Header="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <!--<TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type twui:ComponentViewModel}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>-->
+        </TreeView>
+        
+        <!-- Display of currently selected component. -->
+        <!-- TODO Split btwn XML editor and visual inspector / editor. -->
+        
+        <!-- Display of properties of this component. -->
+
+        <twui:ComponentView DataContext="{Binding SelectedComponent}" Grid.Column="1"/>
+        <!--<ContentControl Grid.Column="1" DataContext="{Binding SelectedComponent}">
+            <DataTemplate DataType="{x:Type twuivm:ComponentViewModel}">
+                <twui:ComponentView DataContext="{Binding SelectedComponent}"/>
+            </DataTemplate>
+        </ContentControl>-->
+
+        <!--<ContentPresenter DataContext="{Binding SelectedComponent.Properties}">
+            <DataTemplate>
+                <twui:ComponentPropertiesView/>
+            </DataTemplate>
+        </ContentPresenter>-->
     </Grid>
 </UserControl>

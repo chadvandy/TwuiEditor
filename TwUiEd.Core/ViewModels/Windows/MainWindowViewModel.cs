@@ -40,11 +40,21 @@ namespace TwUiEd.Core.ViewModels.Windows
             DisplayName = "Main Window";
         }
 
-        private async void SetOpenedFile(TwuiFileViewModel file)
+        private async Task SetOpenedFile(string file_path)
         {
-            // TODO Construct the new TwuiFileViewModel and then run
+            // Construct the new TwuiFileViewModel and then run
             // its own async command to process the file contents and
             // build its innards.
+            TwuiFileViewModel file_vm = new();
+
+            OpenedFiles.Add(file_vm);
+            CurrentlyDisplayedFile = file_vm;
+
+            await file_vm.LoadFile(file_path);
+
+            //var vm = await TwuiFileViewModel.LoadTwuiFile(file_path);
+
+            //await TwuiFileViewModel.LoadTwuiFile(file_path);
         }
 
         [RelayCommand]
@@ -74,10 +84,11 @@ namespace TwUiEd.Core.ViewModels.Windows
 
                 if (!string.IsNullOrEmpty(fileDialog.FileName))
                 {
-                    TwuiFileViewModel opened_file = new(fileDialog.FileName);
+                    await SetOpenedFile(fileDialog.FileName);
+                    //TwuiFileViewModel opened_file = new(fileDialog.FileName);
 
-                    OpenedFiles.Add(opened_file);
-                    CurrentlyDisplayedFile = opened_file;
+                    //OpenedFiles.Add(opened_file);
+                    //CurrentlyDisplayedFile = opened_file;
                 }
                 ////Read the contents of the file into a stream
                 //var fileStream = fileDialog.OpenFile();

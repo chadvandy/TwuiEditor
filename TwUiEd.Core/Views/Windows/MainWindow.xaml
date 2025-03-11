@@ -6,13 +6,21 @@
         xmlns:v="clr-namespace:TwUiEd.Core.Views.Windows"
         xmlns:vm="clr-namespace:TwUiEd.Core.ViewModels.Windows"
         xmlns:twui="clr-namespace:TwUiEd.Core.Views.Twui"
+        xmlns:twuivm="clr-namespace:TwUiEd.Core.ViewModels.Twui"
+        xmlns:file="clr-namespace:TwUiEd.Core.Views.Files"
+        xmlns:filevm="clr-namespace:TwUiEd.Core.ViewModels.Files"
         mc:Ignorable="d" 
         Title="TwUiEdItOr" 
         Height="450" Width="800" 
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
         WindowState="Maximized" WindowStartupLocation="CenterOwner" 
         SizeToContent="Manual">
-    <Grid>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type filevm:TwuiFileViewModel}">
+            <file:TwuiFileView/>
+        </DataTemplate>
+    </Window.Resources>
+        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -42,8 +50,9 @@
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <ContentControl Content="{Binding}" DataContext="{Binding}"/>
+                <DataTemplate DataType="{x:Type filevm:TwuiFileViewModel}">
+                    <file:TwuiFileView />
+                    <!--<ContentControl Content="{Binding}" DataContext="{Binding}"/>-->
                     <!--<ContentControl Content="{Binding }"-->
                 </DataTemplate>
             </TabControl.ContentTemplate>

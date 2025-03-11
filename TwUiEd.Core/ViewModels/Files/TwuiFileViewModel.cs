@@ -2,10 +2,13 @@
 using GroovyCommon.Abstractions.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using TwUiEd.Core.ViewModels.Twui;
 
 namespace TwUiEd.Core.ViewModels.Files
 {
@@ -14,27 +17,63 @@ namespace TwUiEd.Core.ViewModels.Files
         [ObservableProperty]
         public partial string FilePath { get; set; }
 
-        public string FileContents;
+        [ObservableProperty]
+        public partial string FileContents { get; set; }
 
-        // TODO 
+        [ObservableProperty]
+        public partial int FileVersion { get; private set; } = 0;
 
-        //public TwuiFileViewModel() : this("") { }
+        //private ComponentViewModel Root;
+        [ObservableProperty]
+        public partial ComponentViewModel? SelectedComponent { get; set; }
 
-        public TwuiFileViewModel(string file_path)
+        public ObservableCollection<ComponentViewModel> Root { get; private set; } = [];
+
+        public async Task LoadFile(string file_path)
         {
             if (!File.Exists(file_path))
             {
-                // errmsg - invalid file!
-                //return;
+                // TODO errmsg - invalid file.
+                return;
             }
-            // Save the name of the file in question.
+
+            // Save the name of the file.
             FilePath = file_path;
 
-            // TODO Stream the contents of the file and hold it internally.
+            // Asynchronously read the contents of this file.
+            FileContents = await File.ReadAllTextAsync(file_path);
 
-            // TODO Read the text "asynchronously" and assign it to a public property, so the contents can be read in 
-            // the background without blocking the UI thread.
-            FileContents = File.ReadAllText(file_path);
+            // Once the contents are read, start to construct the children
+            // viewmodels for the TwuiFile.
+
+            // Create the XDocument, through which all the internal XML contents
+            // will be deciphered.
+            XDocument xml_doc = XDocument.Parse(FileContents);
+
+            // The root component is the layout node (or, at least,
+            // should be).
+            if (xml_doc.Root is XElement layout)
+            {
+                if (int.TryParse(layout.Attribute("version")?.Value, out int version))
+                {
+                    FileVersion = version;
+                }
+                else
+                {
+                    // Errmsg; no valid version found!
+                }
+
+                // Grab the hierarchy node.
+                var hierarchy = layout.Element("hierarchy");
+
+                // TODO errmsg.
+                if (hierarchy is null || !hierarchy.HasElements) return;
+
+                // Build the Root component, which should be the one
+                // and only child element of the hierarchy. Root's
+                // children are created internally.
+                Root.Add(new(this, hierarchy.Elements().First()));
+            }
         }
     }
 }
