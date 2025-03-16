@@ -29,6 +29,16 @@ namespace TwUiEd.Core.ViewModels.Twui
 
         public ComponentPropertiesViewModel Properties { get; private set; } = null!;
 
+        //  TODO vvvvv needs to be on the TwuiFileViewModel, not the Component level. Though,
+        // perhaps, linking between the Component and the lines in the XML could be nice.
+        // TODO Turn the contents of the XML file into a list of strings that have an
+        // associated line number. Break them out into a new ComponentDocumentViewModel 
+        // class that can handle editing and viewing the XML file, displaying errors, 
+        // etc. etc. etc. etc. 
+        //[ObservableProperty]
+        //public partial 
+
+
         private TwuiFileViewModel File;
 
         [ObservableProperty]

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TwUiEd.Core.Views.Twui
+namespace TwUiEd.Core.Views.Files
 {
     /// <summary>
-    /// Interaction logic for ComponentView.xaml
+    /// Interaction logic for TwuiDisplayView.xaml
     /// </summary>
-    public partial class ComponentView : UserControl
+    public partial class TwuiDisplayView : UserControl
     {
-        public ComponentView()
+        public TwuiDisplayView()
         {
             InitializeComponent();
         }

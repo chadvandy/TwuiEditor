@@ -14,6 +14,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <!-- Component hierarchy details. -->
@@ -41,8 +42,27 @@
         <!-- TODO Split btwn XML editor and visual inspector / editor. -->
         
         <!-- Display of properties of this component. -->
+        
+        <!--
+            TODO Properties view
+            TODO Component view
+            TODO Document view
+        -->
 
-        <twui:ComponentView DataContext="{Binding SelectedComponent}" Grid.Column="1"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <local:TwuiDisplayView Grid.Row="0" DataContext="{Binding }"/>
+
+            <GridSplitter Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+            <local:TwuiDocumentView Grid.Row="1" DataContext="{Binding }"/>
+        </Grid>
+
+        <twui:ComponentPropertiesView DataContext="{Binding SelectedComponent.Properties}" Grid.Column="2"/>
         <!--<ContentControl Grid.Column="1" DataContext="{Binding SelectedComponent}">
             <DataTemplate DataType="{x:Type twuivm:ComponentViewModel}">
                 <twui:ComponentView DataContext="{Binding SelectedComponent}"/>

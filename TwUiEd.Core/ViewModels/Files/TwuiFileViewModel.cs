@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Xml;
 using System.Xml.Linq;
 using TwUiEd.Core.ViewModels.Twui;
 
@@ -27,6 +29,12 @@ namespace TwUiEd.Core.ViewModels.Files
         [ObservableProperty]
         public partial ComponentViewModel? SelectedComponent { get; set; }
 
+        // TODO A list of all the lines in the XML document.
+        public ObservableCollection<string> DocumentLines { get; set; } = [];
+
+        [ObservableProperty]
+        public partial FlowDocument XmlDocument { get; set; } = new();
+
         public ObservableCollection<ComponentViewModel> Root { get; private set; } = [];
 
         public async Task LoadFile(string file_path)
@@ -43,12 +51,30 @@ namespace TwUiEd.Core.ViewModels.Files
             // Asynchronously read the contents of this file.
             FileContents = await File.ReadAllTextAsync(file_path);
 
+            DocumentLines = [.. FileContents.Split(Environment.NewLine, StringSplitOptions.None)];
+
             // Once the contents are read, start to construct the children
             // viewmodels for the TwuiFile.
 
             // Create the XDocument, through which all the internal XML contents
             // will be deciphered.
             XDocument xml_doc = XDocument.Parse(FileContents);
+
+            //string[] lines = FileContents.Split(Environment.NewLine, StringSplitOptions.None);
+            for (int i = 0; i < DocumentLines.Count; i++)
+            {
+                string line = DocumentLines[i];
+
+                // In-line span splitting the line number and the contents of the line.
+                Span xml_line = new();
+
+                xml_line.Inlines.Add(new Run($"{i}: "));
+                xml_line.Inlines.Add(new Run(line));
+                //Paragraph xml_line = new();
+                //xml_line.
+                //XmlDocument.Blocks.Add(new Block())
+                XmlDocument.Blocks.Add(new Paragraph(xml_line));
+            }
 
             // The root component is the layout node (or, at least,
             // should be).
