@@ -56,6 +56,8 @@ namespace TwUiEd.Core.ViewModels.Files
             // Once the contents are read, start to construct the children
             // viewmodels for the TwuiFile.
 
+            // TODO Clean up the FileContents, removing any XML comments which can ruin interpretation.
+
             // Create the XDocument, through which all the internal XML contents
             // will be deciphered.
             XDocument xml_doc = XDocument.Parse(FileContents);

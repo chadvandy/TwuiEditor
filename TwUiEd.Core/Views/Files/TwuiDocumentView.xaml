@@ -17,7 +17,7 @@
         <!--<RichTextBox Document="{Binding DocumentLines, BindsDirectlyToSource=True}">
         </RichTextBox>-->
 
-        <gc:RicherTextBox Document="{Binding XmlDocument, Mode=TwoWay}">
+        <gc:RicherTextBox BoundDocument="{Binding XmlDocument, Mode=TwoWay}">
             <!--<gc:RicherTextBox.Resources>
                 --><!--<Style TargetType="{}"--><!--
             </gc:RicherTextBox.Resources>-->

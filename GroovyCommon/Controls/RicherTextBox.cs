@@ -15,13 +15,13 @@ namespace GroovyCommon.Controls
     public class RicherTextBox : RichTextBox
     {
         public static readonly DependencyProperty DocumentProperty = DependencyProperty.Register(
-            nameof(Document),
+            nameof(BoundDocument),
             typeof(FlowDocument),
             typeof(RicherTextBox),
             new FrameworkPropertyMetadata(
                 null, OnDocumentChanged));
 
-        public new FlowDocument Document
+        public FlowDocument BoundDocument
         {
             get => (FlowDocument)GetValue(DocumentProperty);
             set => SetValue(DocumentProperty, value);
@@ -31,6 +31,7 @@ namespace GroovyCommon.Controls
         {
             if (d is RicherTextBox rtb)
             {
+                //rtb.
                 rtb.Document = (FlowDocument)e.NewValue;
             }
         }
