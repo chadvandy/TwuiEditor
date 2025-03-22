@@ -42,11 +42,11 @@ namespace TwUiEd.Core
             // From this point forward, the application loads up using the viewmodel
             // first, and resource dictionaries (defined in MainWindow.xaml and App.xaml)
             // provide the link between a viewmodel and a view.
-            var window = Services.GetRequiredService<MainWindow>();
+            MainWindow = Services.GetRequiredService<MainWindow>();
             var vm = Services.GetRequiredService<MainWindowViewModel>();
 
-            window.DataContext = vm;
-            window.Show();
+            MainWindow.DataContext = vm;
+            MainWindow.Show();
         }
 
         private static ServiceProvider ConfigureServices()

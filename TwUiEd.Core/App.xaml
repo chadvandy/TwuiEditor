@@ -4,10 +4,15 @@
              xmlns:vm="clr-namespace:TwUiEd.Core.ViewModels.Windows"
              xmlns:v="clr-namespace:TwUiEd.Core.Views.Windows"
              xmlns:local="clr-namespace:TwUiEd.Core"
-             ThemeMode="System">
+             ThemeMode="Dark">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type vm:MainWindowViewModel}">
-            <v:MainWindow/>
-        </DataTemplate>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type vm:MainWindowViewModel}">
+                <v:MainWindow/>
+            </DataTemplate>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using TwUiEd.Core.Models;
 using TwUiEd.Core.Services;
 using TwUiEd.Core.ViewModels.Files;
@@ -33,11 +34,19 @@ namespace TwUiEd.Core.ViewModels.Windows
         [ObservableProperty]
         public partial string StatusText { get; set; } = string.Empty;
 
+        //[ObservableProperty]
+        //public partial bool Maximized { get; set; } = true;
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(MaximizeWindowCommand))]
+        [NotifyCanExecuteChangedFor(nameof(RestoreWindowCommand))]
+        public partial WindowState WindowState { get; set; } = System.Windows.WindowState.Maximized;
+
         //public IList<CommandViewModel> MenuBarCommands { get; set; }
 
         public MainWindowViewModel()
         {
-            DisplayName = "Main Window";
+            DisplayName = "TWUI Editor";
         }
 
         private async Task SetOpenedFile(string file_path)
@@ -56,6 +65,58 @@ namespace TwUiEd.Core.ViewModels.Windows
 
             //await TwuiFileViewModel.LoadTwuiFile(file_path);
         }
+
+        //public static bool IsMaximized()
+        //{
+        //    return App.Current.MainWindow.WindowState == System.Windows.WindowState.Maximized;
+        //}
+
+        //public static bool IsNotMaximized()
+        //{
+        //    return !IsMaximized();
+        //}
+        
+        public bool IsMaximized()
+        {
+            return WindowState == WindowState.Maximized;
+        }
+
+        public bool IsNotMaximized()
+        {
+            return WindowState != WindowState.Maximized;
+        }
+
+        [RelayCommand]
+        private void CloseWindow()
+        {
+            SystemCommands.CloseWindow(App.Current.MainWindow);
+        }
+
+        [RelayCommand(CanExecute = nameof(IsNotMaximized))]
+        private void MaximizeWindow()
+        {
+            SystemCommands.MaximizeWindow(App.Current.MainWindow);
+
+            WindowState = WindowState.Maximized;
+        }
+
+        [RelayCommand]
+        private void MinimizeWindow()
+        {
+            SystemCommands.MinimizeWindow(App.Current.MainWindow);
+
+            WindowState = WindowState.Minimized;
+        }
+
+
+        [RelayCommand(CanExecute = nameof(IsMaximized))]
+        private void RestoreWindow()
+        {
+            SystemCommands.RestoreWindow(App.Current.MainWindow);
+
+            WindowState = WindowState.Normal;
+        }
+
 
         [RelayCommand]
         private async Task OpenFile()
