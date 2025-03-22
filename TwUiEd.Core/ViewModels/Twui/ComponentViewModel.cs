@@ -68,7 +68,7 @@ namespace TwUiEd.Core.ViewModels.Twui
         }
 
         private void ParseComponent()
-        { 
+        {
             Properties = ComponentPropertiesViewModel.Parse(this, ComponentNode);
 
             // TODO ComponentImages

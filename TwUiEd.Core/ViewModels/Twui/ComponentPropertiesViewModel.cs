@@ -71,6 +71,7 @@ namespace TwUiEd.Core.ViewModels.Twui
         // TODO Swap to a new ComponentProperty class, which determines
         // the Name & Tooltip of each ComponentProperty, and then subtype
         // that for each unique type combination.
+
         // Use DataTemplates in the View to programmatically display the
         // ComponentProperties in the properties view. 
         [ObservableProperty]
@@ -105,6 +106,8 @@ namespace TwUiEd.Core.ViewModels.Twui
             // ComponentLevelTooltip
             // TooltipLabel
 
+            // TODO Different parsers based on the different TWUI versions?
+            // TODO Different parsers based on Component vs. ComponentTemplate?
             switch (attr.Name.LocalName)
             {
                 case "allowhorizontalresize":

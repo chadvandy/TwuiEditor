@@ -25,7 +25,6 @@ namespace TwUiEd.Core.ViewModels.Files
         [ObservableProperty]
         public partial int FileVersion { get; private set; } = 0;
 
-        //private ComponentViewModel Root;
         [ObservableProperty]
         public partial ComponentViewModel? SelectedComponent { get; set; }
 
@@ -35,6 +34,8 @@ namespace TwUiEd.Core.ViewModels.Files
         [ObservableProperty]
         public partial FlowDocument XmlDocument { get; set; } = new();
 
+        // Using an ObservableCollection to bind the root to a TreeView;
+        // using a single data context on a treeview is unsupported.
         public ObservableCollection<ComponentViewModel> Root { get; private set; } = [];
 
         public async Task LoadFile(string file_path)

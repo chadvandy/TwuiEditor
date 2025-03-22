@@ -57,11 +57,19 @@
 
             <local:TwuiDisplayView Grid.Row="0" DataContext="{Binding }"/>
 
-            <GridSplitter Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+            <GridSplitter 
+                Grid.Row="0" Height="2" 
+                Margin="0,8"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Bottom"/>
 
             <local:TwuiDocumentView Grid.Row="1" DataContext="{Binding }"/>
         </Grid>
 
+        <!-- TODO This should be ComponentDetailsView or something similar,
+            and should hold the properties of the selected component as well
+            as all of its internals - states, images, etc.
+        -->
         <twui:ComponentPropertiesView DataContext="{Binding SelectedComponent.Properties}" Grid.Column="2"/>
         <!--<ContentControl Grid.Column="1" DataContext="{Binding SelectedComponent}">
             <DataTemplate DataType="{x:Type twuivm:ComponentViewModel}">
