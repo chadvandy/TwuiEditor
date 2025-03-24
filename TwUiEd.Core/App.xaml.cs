@@ -57,7 +57,7 @@ namespace TwUiEd.Core
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<MainWindow>();
 
-            services.AddSingleton<ContentsViewModel>();
+            //services.AddSingleton<ContentsViewModel>();
 
             return services.BuildServiceProvider();
         }
