@@ -6,20 +6,27 @@
              xmlns:local="clr-namespace:TwUiEd.Core.Views.Twui"
              xmlns:vm="clr-namespace:TwUiEd.Core.ViewModels.Twui"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type={x:Type vm:ComponentPropertiesViewModel}}"
+             d:DataContext="{d:DesignInstance Type={x:Type vm:ComponentViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
         <TextBlock Text="Component Properties"/>
         <Separator BorderThickness="2"/>
         <ListView ItemsSource="{Binding Properties}">
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type vm:ComponentBooleanProperty}">
+            <ListView.Resources>
+                <DataTemplate DataType="{x:Type vm:ComponentBooleanPropertyViewModel}">
                     <StackPanel Orientation="Horizontal" ToolTip="{Binding Tooltip}">
                         <TextBlock Text="{Binding Name}"/>
                         <CheckBox IsChecked="{Binding Value}"/>
                     </StackPanel>
                 </DataTemplate>
-            </ListView.ItemTemplate>
+
+                <DataTemplate DataType="{x:Type vm:ComponentStringPropertyViewModel}">
+                    <StackPanel Orientation="Horizontal" ToolTip="{Binding Tooltip}">
+                        <TextBlock Text="{Binding Name}"/>
+                        <TextBox Text="{Binding Value}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.Resources>
         </ListView>
     </StackPanel>
 </UserControl>

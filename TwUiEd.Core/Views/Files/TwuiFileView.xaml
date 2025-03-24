@@ -70,7 +70,7 @@
             and should hold the properties of the selected component as well
             as all of its internals - states, images, etc.
         -->
-        <twui:ComponentPropertiesView DataContext="{Binding SelectedComponent.Properties}" Grid.Column="2"/>
+        <twui:ComponentPropertiesView DataContext="{Binding SelectedComponent}" Grid.Column="2"/>
         <!--<ContentControl Grid.Column="1" DataContext="{Binding SelectedComponent}">
             <DataTemplate DataType="{x:Type twuivm:ComponentViewModel}">
                 <twui:ComponentView DataContext="{Binding SelectedComponent}"/>

@@ -18,10 +18,47 @@ using TwUiEd.Core.Views.Twui;
 
 namespace TwUiEd.Core.ViewModels.Windows
 {
+    public partial class FileViewModel : ViewModelBase
+    {
+        [ObservableProperty]
+        public partial string Name { get; set; } = string.Empty;
+
+        [ObservableProperty]
+        public partial string FullPath { get; set; } = string.Empty;
+
+        [ObservableProperty]
+        public partial DirectoryViewModel ParentDirectory { get; set; }
+    }
+
+    // A ViewModel detailing the contents of a directory. Can be
+    // nested within another directory, and can have files or
+    // subdirectories within.
+    public partial class DirectoryViewModel : ViewModelBase
+    {
+        [ObservableProperty]
+        public partial string Name { get; set; } = string.Empty;
+
+        [ObservableProperty]
+        public partial string FullPath { get; set; } = string.Empty;
+
+        [ObservableProperty]
+        public partial DirectoryViewModel? ParentDirectory { get; set; }
+
+        [ObservableProperty]
+        public partial ObservableCollection<DirectoryViewModel> ChildDirectories { get; set; } = [];
+
+        [ObservableProperty]
+        public partial ObservableCollection<FileViewModel> ChildContents { get; set; } = [];
+
+        // TODO On setting the path of the directory (or, on constructing it),
+        // parse the contents and build the collections.
+        
+    }
+
     public partial class MainWindowViewModel : ViewModelBase
     {
         [ObservableProperty]
-        public TwuiFileModel? openedFile;
+        public partial TwuiFileModel? OpenedFile { get; set; }
 
         [ObservableProperty]
         public partial TwuiFileViewModel? CurrentlyDisplayedFile { get; set; }
@@ -29,13 +66,20 @@ namespace TwUiEd.Core.ViewModels.Windows
         [ObservableProperty]
         public partial ObservableCollection<TwuiFileViewModel> OpenedFiles { get; set; } = [];
 
-        //[ObservableProperty]
+        [ObservableProperty]
+        public partial DirectoryViewModel ProjectDirectory { get; set; } = new();
+
+        [ObservableProperty]
+        public partial DirectoryViewModel BaseDirectory { get; set; } = new();
+
+        [ObservableProperty]
+        public partial ObservableCollection<string> ProjectFiles { get; set; } = [];
+        
+        [ObservableProperty]
+        public partial ObservableCollection<string> BaseFiles { get; set; } = [];
 
         [ObservableProperty]
         public partial string StatusText { get; set; } = string.Empty;
-
-        //[ObservableProperty]
-        //public partial bool Maximized { get; set; } = true;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(MaximizeWindowCommand))]
@@ -66,16 +110,18 @@ namespace TwUiEd.Core.ViewModels.Windows
             //await TwuiFileViewModel.LoadTwuiFile(file_path);
         }
 
-        //public static bool IsMaximized()
+        //partial void OnBaseDirectoryChanged(string oldValue, string newValue)
         //{
-        //    return App.Current.MainWindow.WindowState == System.Windows.WindowState.Maximized;
+        //    // Find everything in the directory, and save it in the
+        //    // BaseFiles collection.
+        //    //throw new NotImplementedException();
         //}
 
-        //public static bool IsNotMaximized()
+        //partial void OnProjectDirectoryChanged(string oldValue, string newValue)
         //{
-        //    return !IsMaximized();
+        //    //throw new NotImplementedException();
         //}
-        
+
         public bool IsMaximized()
         {
             return WindowState == WindowState.Maximized;
@@ -117,6 +163,43 @@ namespace TwUiEd.Core.ViewModels.Windows
             WindowState = WindowState.Normal;
         }
 
+        [RelayCommand]
+        private void SetProjectDirectory()
+        {
+            OpenFolderDialog dir_dialog = new()
+            {
+                Multiselect = false,
+            };
+
+            if (dir_dialog.ShowDialog() == true)
+            {
+                string dir = dir_dialog.FolderName;
+                if (!string.IsNullOrEmpty(dir))
+                {
+                    // Set proj directory path!
+                    ProjectDirectory.FullPath = dir;
+                }
+            }
+        }
+
+        [RelayCommand]
+        private void SetBaseDirectory()
+        {
+            OpenFolderDialog dir_dialog = new()
+            {
+                Multiselect = false,
+            };
+
+            if (dir_dialog.ShowDialog() == true)
+            {
+                string dir = dir_dialog.FolderName;
+                if (!string.IsNullOrEmpty(dir))
+                {
+                    // Set base directory path!
+                    BaseDirectory.FullPath = dir;
+                }
+            }
+        }
 
         [RelayCommand]
         private async Task OpenFile()
