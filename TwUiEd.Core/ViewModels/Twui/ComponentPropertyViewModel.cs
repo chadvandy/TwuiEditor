@@ -6,12 +6,52 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Linq;
 using TwUiEd.Core.ViewModels.Twui.Properties;
 
 namespace TwUiEd.Core.ViewModels.Twui
 {
-    public abstract partial class ComponentPropertyViewModel : ViewModelBase
+    public partial class VectorViewModel : ViewModelBase
+    {
+        private Vector2 Vector { get; set; }
+
+        public VectorViewModel(Vector2 vector)
+        {
+            Vector = vector;
+
+            X = Vector.X;
+            Y = Vector.Y;
+        }
+
+        [ObservableProperty]
+        public partial float X { get; set; }
+
+        [ObservableProperty]
+        public partial float Y { get; set; }
+
+        partial void OnXChanged(float value)
+        {
+            Vector = Vector2.Add(Vector, new Vector2(value, 0));
+        }
+
+        partial void OnYChanged(float value)
+        {
+            Vector = Vector2.Add(Vector, new Vector2(0, value));
+        }
+    }
+
+    public interface IComponentProperty
+    {
+        public string Name { get; set; }
+        public string Tooltip { get; set; }
+        public string Category { get; set; }
+        public string XmlAttribute { get; set; }
+
+        public bool Parse(XAttribute attr);
+    }
+
+    public abstract partial class ComponentPropertyViewModel<T> : ViewModelBase, IComponentProperty
     {
         [ObservableProperty]
         public partial string Name { get; set; } = string.Empty;
@@ -25,37 +65,34 @@ namespace TwUiEd.Core.ViewModels.Twui
         [ObservableProperty]
         public partial string XmlAttribute { get; set; } = string.Empty;
 
+        [ObservableProperty]
+        public partial T Value { get; set; } = default;
+
+        [ObservableProperty]
+        public partial T DefaultValue { get; private set; } = default;
+
+        [ObservableProperty]
+        public partial Type ValueType { get; private set; } = typeof(T);
+
         public abstract bool Parse(XAttribute attr);
-    }
 
-    public abstract partial class ComponentPropertyViewModel<T> : ComponentPropertyViewModel
-    {
-        public Type ValueType => typeof(T);
-
-        [ObservableProperty]
-        public partial T Value { get; set; }
-
-        [ObservableProperty]
-        public partial T DefaultValue { get; set; }
-
-        public ComponentPropertyViewModel(string name, string tt, string cat, string attr, T default_value)
+        public ComponentPropertyViewModel(string name, string tt, string cat, string attr, Type type, T default_value)
         {
             Name = name;
             Tooltip = tt;
             Category = cat;
             XmlAttribute = attr;
 
+            ValueType = type;
             DefaultValue = default_value;
             Value = default_value;
         }
-
-        public override abstract bool Parse(XAttribute attr);
     }
 
     public class ComponentBooleanPropertyViewModel : ComponentPropertyViewModel<bool>
     {
         public ComponentBooleanPropertyViewModel(string name, string tooltip, string category, string attr, bool default_value)
-            : base(name, tooltip, category, attr, default_value) { }
+            : base(name, tooltip, category, attr, typeof(bool), default_value) { }
 
         public override bool Parse(XAttribute attr)
         {
@@ -68,7 +105,7 @@ namespace TwUiEd.Core.ViewModels.Twui
     public class ComponentStringPropertyViewModel : ComponentPropertyViewModel<string>
     {
         public ComponentStringPropertyViewModel(string name, string tt, string cat, string attr, string default_value) 
-            : base(name, tt, cat, attr, default_value)
+            : base(name, tt, cat, attr, typeof(string), default_value)
         {
         }
 
@@ -80,11 +117,17 @@ namespace TwUiEd.Core.ViewModels.Twui
         }
     }
 
-    public class ComponentVectorPropertyViewModel : ComponentPropertyViewModel<Vector2>
+    public partial class ComponentVectorPropertyViewModel : ComponentPropertyViewModel<Vector2>
     {
-        public ComponentVectorPropertyViewModel(string name, string tt, string cat, string attr, Vector2 default_value) : base(name, tt, cat, attr, default_value)
+        public ComponentVectorPropertyViewModel(string name, string tt, string cat, string attr, Vector2 default_value) : base(name, tt, cat, attr, typeof(Vector2), default_value)
         {
         }
+
+        [ObservableProperty]
+        public partial float X { get; set; }
+
+        [ObservableProperty]
+        public partial float Y { get; set; }
 
         public override bool Parse(XAttribute attr)
         {
@@ -128,13 +171,16 @@ namespace TwUiEd.Core.ViewModels.Twui
 
             Value = ret;
 
+            X = Value.X;
+            Y = Value.Y;
+
             return true;
         }
     }
 
     public class ComponentDockingPointPropertyViewModel : ComponentPropertyViewModel<DockingPoint>
     {
-        public ComponentDockingPointPropertyViewModel(string name, string tt, string cat, string attr, DockingPoint default_value) : base(name, tt, cat, attr, default_value)
+        public ComponentDockingPointPropertyViewModel(string name, string tt, string cat, string attr, DockingPoint default_value) : base(name, tt, cat, attr, typeof(DockingPoint), default_value)
         {
         }
 

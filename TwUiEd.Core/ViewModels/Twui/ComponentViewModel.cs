@@ -30,7 +30,7 @@ namespace TwUiEd.Core.ViewModels.Twui
         //public ComponentPropertiesViewModel Properties { get; private set; } = null!;
 
         [ObservableProperty]
-        public partial ObservableCollection<ComponentPropertyViewModel> Properties { get; set; } = [];
+        public partial ObservableCollection<IComponentProperty> Properties { get; set; } = [];
 
         //  TODO vvvvv needs to be on the TwuiFileViewModel, not the Component level. Though,
         // perhaps, linking between the Component and the lines in the XML could be nice.
