@@ -117,6 +117,17 @@ namespace TwUiEd.Core.ViewModels.Twui
         }
     }
 
+    public class ComponentIntegerPropertyViewModel(string name, string tt, string cat, string attr, int default_value) 
+        : ComponentPropertyViewModel<int>(name, tt, cat, attr, typeof(int), default_value)
+    {
+        public override bool Parse(XAttribute attr)
+        {
+            Value = (int)attr; 
+            return true;
+            //throw new NotImplementedException();
+        }
+    }
+
     public partial class ComponentVectorPropertyViewModel : ComponentPropertyViewModel<Vector2>
     {
         public ComponentVectorPropertyViewModel(string name, string tt, string cat, string attr, Vector2 default_value) : base(name, tt, cat, attr, typeof(Vector2), default_value)
@@ -180,6 +191,20 @@ namespace TwUiEd.Core.ViewModels.Twui
 
     public class ComponentDockingPointPropertyViewModel : ComponentPropertyViewModel<DockingPoint>
     {
+        private static readonly Dictionary<string, DockingPoint> TextToDockingPoint = new()
+        {
+            { "Top Left", DockingPoint.TopLeft },
+            { "Top Center", DockingPoint.Top },
+            { "Top Right", DockingPoint.TopRight },
+            { "Center Left", DockingPoint.CenterLeft },
+            { "Center", DockingPoint.Center },
+            { "Center Right", DockingPoint.CenterRight },
+            { "Bottom Left", DockingPoint.BottomLeft },
+            { "Bottom Center", DockingPoint.Bottom },
+            { "Bottom Right", DockingPoint.BottomRight },
+        };
+
+
         public ComponentDockingPointPropertyViewModel(string name, string tt, string cat, string attr, DockingPoint default_value) : base(name, tt, cat, attr, typeof(DockingPoint), default_value)
         {
         }
@@ -188,8 +213,17 @@ namespace TwUiEd.Core.ViewModels.Twui
         {
             // TODO Find the enum that matches the text of the XML node.
             //throw new NotImplementedException();
+            if (string.IsNullOrEmpty(attr.Value))
+            {
+                throw new ArgumentNullException(nameof(attr));
+            }
 
             Value = DockingPoint.None;
+
+            if (TextToDockingPoint.ContainsKey(attr.Value))
+            {
+                Value = TextToDockingPoint.GetValueOrDefault(attr.Value);
+            }
 
             return true;
         }

@@ -11,6 +11,8 @@ using TwUiEd.Core.ViewModels.Files;
 
 namespace TwUiEd.Core.ViewModels.Twui
 {
+    // TODO The parsing system should be completely separated from the ComponentViewModel.
+
     public partial class ComponentViewModel : ViewModelBase
     {
         [ObservableProperty]
@@ -95,6 +97,11 @@ namespace TwUiEd.Core.ViewModels.Twui
 
                 Properties.Add(new ComponentVectorPropertyViewModel("Component Offset", "", "Layout", "offset", new()));
                 Properties.Add(new ComponentVectorPropertyViewModel("Dock Offset", "", "Layout", "dock_offset", new()));
+
+                Properties.Add(new ComponentBooleanPropertyViewModel("Tooltips Localised", "", "", "tooltiptslocalised", true));
+                Properties.Add(new ComponentIntegerPropertyViewModel("Priority", "", "", "priority", 0));
+
+
             }
         }
 
@@ -119,10 +126,50 @@ namespace TwUiEd.Core.ViewModels.Twui
             //Properties = ComponentPropertiesViewModel.Parse(this, ComponentNode);
             ParseProperties();
 
-            // TODO ComponentImages
             // TODO ComponentStates
+            // Should have a child element called <states>. Mandatory, should always have at least 1 state.
+            XElement? statesElement = ComponentNode.Element("states");
+
+            if (statesElement is null)
+            {
+                throw new DecoderFallbackException("Missing <states> subelement for the parsed component!");
+            }
+        
+            XElement? imagesElement = ComponentNode.Element("componentimages");
+
+            if (imagesElement is null)
+            {
+                throw new DecoderFallbackException("Missing <componentimages> subelement for the parsed component!");
+            }
+
+            ParseStates(statesElement);
+            ParseImages(imagesElement);
+
+            // TODO ComponentImages
             // TODO ComponentStateImageMetrics
             // TODO All other elements.
+        }
+
+        /// <summary>
+        /// Parse the various states for this component.
+        /// </summary>
+        /// <param name="statesNode"></param>
+        private void ParseStates(XElement statesNode)
+        {
+            foreach (XElement child in statesNode.Elements())
+            {
+                ParseState(child);
+            }
+        }
+
+        private void ParseState(XElement stateNode)
+        {
+
+        }
+
+        private void ParseImages(XElement imagesNode)
+        {
+
         }
 
         /// <summary>
